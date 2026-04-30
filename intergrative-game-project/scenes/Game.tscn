@@ -1,3 +1,113 @@
-[gd_scene format=3]
+[gd_scene load_steps=7 format=3]
 
-[node name="root" type="Node2D" unique_id=964331604]
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1_game"]
+[ext_resource type="Script" path="res://scripts/OfficeBackground.gd" id="2_bg"]
+[ext_resource type="PackedScene" path="res://scenes/Player.tscn" id="3_player"]
+[ext_resource type="PackedScene" path="res://scenes/HUD.tscn" id="4_hud"]
+[ext_resource type="AudioStream" path="res://assets/audio/music.wav" id="5_music"]
+[ext_resource type="Script" path="res://scripts/PauseMenu.gd" id="6_pause"]
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_game")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="AmbientLight" type="CanvasModulate" parent="."]
+color = Color(0.85, 0.86, 0.92, 1)
+
+[node name="SpawnPoints" type="Node2D" parent="."]
+
+[node name="Spot1" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(180, 220)
+
+[node name="Spot2" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(640, 200)
+
+[node name="Spot3" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1100, 220)
+
+[node name="Spot4" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(180, 540)
+
+[node name="Spot5" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(640, 560)
+
+[node name="Spot6" type="Marker2D" parent="SpawnPoints"]
+position = Vector2(1100, 540)
+
+[node name="Tasks" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("3_player")]
+position = Vector2(640, 360)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="RoundTimer" type="Timer" parent="."]
+wait_time = 1.0
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_music")
+volume_db = -3.0
+bus = "Music"
+
+[node name="HUD" parent="." instance=ExtResource("4_hud")]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 5
+
+[node name="StressOverlay" type="ColorRect" parent="UILayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(0.85, 0.0, 0.0, 0)
+
+[node name="FlashOverlay" type="ColorRect" parent="UILayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+color = Color(1, 0.2, 0.2, 0)
+
+[node name="PauseMenu" type="Control" parent="UILayer"]
+process_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 0
+script = ExtResource("6_pause")
+
+[node name="Dim" type="ColorRect" parent="UILayer/PauseMenu"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 0.55)
+
+[node name="VBox" type="VBoxContainer" parent="UILayer/PauseMenu"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -90.0
+offset_right = 120.0
+offset_bottom = 90.0
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="Title" type="Label" parent="UILayer/PauseMenu/VBox"]
+text = "PAUSED"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+
+[node name="ResumeBtn" type="Button" parent="UILayer/PauseMenu/VBox"]
+text = "RESUME"
+custom_minimum_size = Vector2(220, 44)
+
+[node name="RestartBtn" type="Button" parent="UILayer/PauseMenu/VBox"]
+text = "RESTART"
+custom_minimum_size = Vector2(220, 44)
+
+[node name="MenuBtn" type="Button" parent="UILayer/PauseMenu/VBox"]
+text = "MAIN_MENU"
+custom_minimum_size = Vector2(220, 44)

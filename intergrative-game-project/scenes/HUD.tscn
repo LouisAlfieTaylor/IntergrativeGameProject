@@ -1,5 +1,189 @@
-[gd_scene format=3]
+[gd_scene load_steps=8 format=3]
 
-[node name="root" type="Control" unique_id=1436975931]
-layout_mode = 3
-anchors_preset = 0
+[ext_resource type="Script" path="res://scripts/HUD.gd" id="1_hud"]
+
+[sub_resource type="StyleBoxFlat" id="SB_panel"]
+bg_color = Color(0.10, 0.13, 0.18, 0.65)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 8.0
+content_margin_right = 12.0
+content_margin_bottom = 8.0
+
+[sub_resource type="StyleBoxFlat" id="SB_stress_bg"]
+bg_color = Color(0.18, 0.20, 0.26, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="SB_stress_fill"]
+bg_color = Color(0.92, 0.34, 0.30, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="SB_focus_bg"]
+bg_color = Color(0.18, 0.20, 0.26, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="SB_focus_fill"]
+bg_color = Color(0.32, 0.74, 0.92, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="Theme" id="Theme_hud"]
+default_font_size = 18
+
+[node name="HUD" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_hud")
+
+[node name="Root" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+theme = SubResource("Theme_hud")
+
+[node name="Top" type="HBoxContainer" parent="Root"]
+anchor_right = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = 80.0
+theme_override_constants/separation = 16
+mouse_filter = 2
+
+[node name="StressPanel" type="PanelContainer" parent="Root/Top"]
+custom_minimum_size = Vector2(280, 0)
+theme_override_styles/panel = SubResource("SB_panel")
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/Top/StressPanel"]
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Root/Top/StressPanel/VBox"]
+text = "STRESS"
+theme_override_colors/font_color = Color(1, 0.85, 0.85, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Bar" type="ProgressBar" parent="Root/Top/StressPanel/VBox"]
+custom_minimum_size = Vector2(0, 18)
+max_value = 100.0
+value = 0.0
+show_percentage = false
+theme_override_styles/background = SubResource("SB_stress_bg")
+theme_override_styles/fill = SubResource("SB_stress_fill")
+
+[node name="TimePanel" type="PanelContainer" parent="Root/Top"]
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.6
+theme_override_styles/panel = SubResource("SB_panel")
+mouse_filter = 2
+
+[node name="TimeLabel" type="Label" parent="Root/Top/TimePanel"]
+text = "TIME  01:30"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 24
+
+[node name="ScorePanel" type="PanelContainer" parent="Root/Top"]
+custom_minimum_size = Vector2(220, 0)
+theme_override_styles/panel = SubResource("SB_panel")
+mouse_filter = 2
+
+[node name="ScoreLabel" type="Label" parent="Root/Top/ScorePanel"]
+text = "SCORE  0"
+horizontal_alignment = 2
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Bottom" type="HBoxContainer" parent="Root"]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -90.0
+offset_right = -16.0
+offset_bottom = -16.0
+theme_override_constants/separation = 16
+mouse_filter = 2
+
+[node name="FocusPanel" type="PanelContainer" parent="Root/Bottom"]
+custom_minimum_size = Vector2(360, 0)
+theme_override_styles/panel = SubResource("SB_panel")
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Root/Bottom/FocusPanel"]
+theme_override_constants/separation = 4
+
+[node name="Title" type="Label" parent="Root/Bottom/FocusPanel/VBox"]
+text = "FOCUS"
+theme_override_colors/font_color = Color(0.7, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="Bar" type="ProgressBar" parent="Root/Bottom/FocusPanel/VBox"]
+custom_minimum_size = Vector2(0, 18)
+max_value = 100.0
+value = 100.0
+show_percentage = false
+theme_override_styles/background = SubResource("SB_focus_bg")
+theme_override_styles/fill = SubResource("SB_focus_fill")
+
+[node name="Hint" type="Label" parent="Root/Bottom"]
+size_flags_horizontal = 3
+size_flags_vertical = 4
+text = "WASD/Arrows: Move    SPACE: Action    SHIFT: Focus    ESC: Pause"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 0.7)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 16
+
+[node name="Popup" type="Label" parent="Root"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -130.0
+offset_right = 180.0
+offset_bottom = -70.0
+text = ""
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 48
+mouse_filter = 2
+pivot_offset = Vector2(180, 30)
+
+[node name="BurstIndicator" type="Label" parent="Root"]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = 90.0
+offset_right = 120.0
+offset_bottom = 120.0
+text = "FOCUS"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.7, 0.95, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 4
+theme_override_font_sizes/font_size = 22
+mouse_filter = 2

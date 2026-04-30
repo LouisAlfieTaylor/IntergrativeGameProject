@@ -1,5 +1,78 @@
-[gd_scene format=3]
+[gd_scene load_steps=4 format=3]
 
-[node name="root" type="Control" unique_id=179351405]
-layout_mode = 3
-anchors_preset = 0
+[ext_resource type="Script" path="res://scripts/GameOver.gd" id="1_go"]
+[ext_resource type="Script" path="res://scripts/MenuBackground.gd" id="2_bg"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_click.wav" id="3_click"]
+
+[node name="GameOver" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_go")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="Center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center"]
+custom_minimum_size = Vector2(520, 0)
+theme_override_constants/separation = 16
+alignment = 1
+
+[node name="Title" type="Label" parent="Center/VBox"]
+text = "SHIFT COMPLETE!"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.10, 0.13, 0.22, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 60
+
+[node name="Message" type="Label" parent="Center/VBox"]
+text = "You survived the crunch."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Spacer" type="Control" parent="Center/VBox"]
+custom_minimum_size = Vector2(0, 16)
+
+[node name="Stats" type="VBoxContainer" parent="Center/VBox"]
+theme_override_constants/separation = 6
+alignment = 1
+
+[node name="ScoreLabel" type="Label" parent="Center/VBox/Stats"]
+text = "FINAL SCORE: 0"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_font_sizes/font_size = 28
+
+[node name="TasksLabel" type="Label" parent="Center/VBox/Stats"]
+text = "TASKS COMPLETED: 0"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Spacer2" type="Control" parent="Center/VBox"]
+custom_minimum_size = Vector2(0, 16)
+
+[node name="Buttons" type="HBoxContainer" parent="Center/VBox"]
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="RestartBtn" type="Button" parent="Center/VBox/Buttons"]
+custom_minimum_size = Vector2(200, 44)
+text = "RESTART"
+theme_override_font_sizes/font_size = 22
+
+[node name="MenuBtn" type="Button" parent="Center/VBox/Buttons"]
+custom_minimum_size = Vector2(200, 44)
+text = "MAIN MENU"
+theme_override_font_sizes/font_size = 22
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_click")
+bus = "SFX"

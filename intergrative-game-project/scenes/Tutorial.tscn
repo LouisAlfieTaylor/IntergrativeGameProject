@@ -1,5 +1,111 @@
-[gd_scene format=3]
+[gd_scene load_steps=4 format=3]
 
-[node name="root" type="Control" unique_id=1276833985]
-layout_mode = 3
-anchors_preset = 0
+[ext_resource type="Script" path="res://scripts/Tutorial.gd" id="1_tut"]
+[ext_resource type="Script" path="res://scripts/MenuBackground.gd" id="2_bg"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_click.wav" id="3_click"]
+
+[node name="Tutorial" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_tut")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="Center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center"]
+custom_minimum_size = Vector2(820, 0)
+theme_override_constants/separation = 14
+
+[node name="Title" type="Label" parent="Center/VBox"]
+text = "HOW TO PLAY"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.10, 0.13, 0.22, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 44
+
+[node name="Goal" type="Label" parent="Center/VBox"]
+text = "Survive the 90-second shift without your stress reaching maximum."
+horizontal_alignment = 1
+autowrap_mode = 3
+theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Spacer" type="Control" parent="Center/VBox"]
+custom_minimum_size = Vector2(0, 8)
+
+[node name="Lines" type="VBoxContainer" parent="Center/VBox"]
+theme_override_constants/separation = 8
+
+[node name="Move" type="Label" parent="Center/VBox/Lines"]
+text = "Move: WASD or Arrow Keys"
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="Action" type="Label" parent="Center/VBox/Lines"]
+text = "Action: SPACE"
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="Focus" type="Label" parent="Center/VBox/Lines"]
+text = "Focus Burst: SHIFT"
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="Pause" type="Label" parent="Center/VBox/Lines"]
+text = "Pause: ESC"
+theme_override_colors/font_color = Color(0.85, 0.92, 1, 1)
+theme_override_font_sizes/font_size = 20
+
+[node name="Task" type="Label" parent="Center/VBox/Lines"]
+text = "Walk to a task icon, then press SPACE when the marker is in the green zone."
+autowrap_mode = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Perfect" type="Label" parent="Center/VBox/Lines"]
+text = "Perfect timing gives bonus Focus and score."
+autowrap_mode = 3
+theme_override_colors/font_color = Color(0.7, 0.95, 1, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Fail" type="Label" parent="Center/VBox/Lines"]
+text = "Missed or expired tasks raise your stress."
+autowrap_mode = 3
+theme_override_colors/font_color = Color(1, 0.7, 0.7, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Spacer2" type="Control" parent="Center/VBox"]
+custom_minimum_size = Vector2(0, 8)
+
+[node name="Tip" type="Label" parent="Center/VBox"]
+text = "Tip: Use Focus Burst when many tasks pile up!"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_font_sizes/font_size = 18
+
+[node name="Spacer3" type="Control" parent="Center/VBox"]
+custom_minimum_size = Vector2(0, 12)
+
+[node name="Buttons" type="HBoxContainer" parent="Center/VBox"]
+alignment = 1
+theme_override_constants/separation = 16
+
+[node name="StartBtn" type="Button" parent="Center/VBox/Buttons"]
+custom_minimum_size = Vector2(180, 44)
+text = "START"
+theme_override_font_sizes/font_size = 22
+
+[node name="BackBtn" type="Button" parent="Center/VBox/Buttons"]
+custom_minimum_size = Vector2(180, 44)
+text = "BACK"
+theme_override_font_sizes/font_size = 22
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_click")
+bus = "SFX"

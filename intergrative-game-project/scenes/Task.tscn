@@ -1,3 +1,200 @@
-[gd_scene format=3]
+[gd_scene load_steps=15 format=3]
 
-[node name="root" type="Area2D" unique_id=1145801115]
+[ext_resource type="Script" path="res://scripts/Task.gd" id="1_task"]
+[ext_resource type="Script" path="res://scripts/TaskIcon.gd" id="2_icon"]
+[ext_resource type="Script" path="res://scripts/TimerRing.gd" id="3_ring"]
+[ext_resource type="Script" path="res://scripts/TimingBar.gd" id="4_bar"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_success.wav" id="5_success"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_fail.wav" id="6_fail"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_trigger"]
+radius = 56.0
+
+[sub_resource type="Gradient" id="Gradient_particle"]
+offsets = PackedFloat32Array(0, 0.5, 1)
+colors = PackedColorArray(1, 1, 0.85, 1, 1, 0.85, 0.45, 0.85, 1, 0.6, 0.2, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_particle"]
+gradient = SubResource("Gradient_particle")
+width = 64
+height = 64
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_burst"]
+emission_shape = 1
+emission_sphere_radius = 8.0
+direction = Vector3(0, -1, 0)
+spread = 180.0
+gravity = Vector3(0, 220, 0)
+initial_velocity_min = 80.0
+initial_velocity_max = 220.0
+angular_velocity_min = -360.0
+angular_velocity_max = 360.0
+scale_min = 0.4
+scale_max = 1.1
+color = Color(1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_RESET_t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Icon:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_appear"]
+resource_name = "appear"
+length = 1.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.7, 1.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0.2, 0.2), Vector2(1.15, 1.15), Vector2(1.0, 1.0), Vector2(1.05, 1.05)]
+}
+
+[sub_resource type="Animation" id="Animation_complete"]
+resource_name = "complete"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:scale")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.18, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(1.5, 1.5), Vector2(0.0, 0.0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Icon:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_fail"]
+resource_name = "fail"
+length = 0.45
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Icon:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.45),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 0.4, 0.4, 1), Color(1, 1, 1, 1), Color(1, 0.4, 0.4, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Icon:scale")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.45),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(0.6, 0.6)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_task"]
+_data = {
+"RESET": SubResource("Animation_RESET_t"),
+"appear": SubResource("Animation_appear"),
+"complete": SubResource("Animation_complete"),
+"fail": SubResource("Animation_fail")
+}
+
+[node name="Task" type="Area2D"]
+collision_layer = 2
+collision_mask = 1
+monitoring = true
+monitorable = true
+script = ExtResource("1_task")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_trigger")
+
+[node name="Icon" type="Node2D" parent="."]
+script = ExtResource("2_icon")
+
+[node name="TimerRing" type="Node2D" parent="."]
+script = ExtResource("3_ring")
+
+[node name="TimingBar" type="Node2D" parent="."]
+position = Vector2(0, -64)
+script = ExtResource("4_bar")
+
+[node name="Prompt" type="Label" parent="."]
+offset_left = -40.0
+offset_top = -100.0
+offset_right = 40.0
+offset_bottom = -76.0
+text = "SPACE"
+horizontal_alignment = 1
+vertical_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 6
+theme_override_font_sizes/font_size = 22
+
+[node name="SuccessBurst" type="GPUParticles2D" parent="."]
+amount = 24
+texture = SubResource("GradientTexture2D_particle")
+lifetime = 0.7
+one_shot = true
+explosiveness = 0.85
+process_material = SubResource("ParticleProcessMaterial_burst")
+emitting = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_task")
+}
+
+[node name="SuccessSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("5_success")
+bus = "SFX"
+
+[node name="FailSFX" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("6_fail")
+bus = "SFX"
