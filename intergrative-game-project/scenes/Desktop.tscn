@@ -80,7 +80,7 @@ custom_minimum_size = Vector2(86, 86)
 flat = true
 script = ExtResource("3_icon")
 icon_kind = "briefcase"
-icon_label = "Crunch Time"
+icon_label = "APP_CRUNCHTIME"
 metadata/action = "play"
 
 [node name="MyComputer" type="Button" parent="IconGrid"]
@@ -88,7 +88,7 @@ custom_minimum_size = Vector2(86, 86)
 flat = true
 script = ExtResource("3_icon")
 icon_kind = "computer"
-icon_label = "My Computer"
+icon_label = "APP_MYCOMPUTER"
 metadata/action = "nag"
 metadata/nag_pool = "default"
 
@@ -97,7 +97,7 @@ custom_minimum_size = Vector2(86, 86)
 flat = true
 script = ExtResource("3_icon")
 icon_kind = "recycle"
-icon_label = "Recycle Bin"
+icon_label = "APP_RECYCLE"
 metadata/action = "nag"
 metadata/nag_pool = "recycle"
 
@@ -106,7 +106,7 @@ custom_minimum_size = Vector2(86, 86)
 flat = true
 script = ExtResource("3_icon")
 icon_kind = "browser"
-icon_label = "Internet"
+icon_label = "APP_INTERNET"
 metadata/action = "nag"
 metadata/nag_pool = "browser"
 
@@ -115,7 +115,7 @@ custom_minimum_size = Vector2(86, 86)
 flat = true
 script = ExtResource("3_icon")
 icon_kind = "notepad"
-icon_label = "Notepad"
+icon_label = "APP_NOTEPAD"
 metadata/action = "nag"
 metadata/nag_pool = "default"
 
@@ -124,7 +124,7 @@ custom_minimum_size = Vector2(86, 86)
 flat = true
 script = ExtResource("3_icon")
 icon_kind = "quit"
-icon_label = "Shut Down"
+icon_label = "SHUT_DOWN"
 metadata/action = "quit"
 
 [node name="Windows" type="Control" parent="."]

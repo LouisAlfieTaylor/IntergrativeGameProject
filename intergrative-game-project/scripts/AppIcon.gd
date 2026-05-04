@@ -4,13 +4,18 @@ extends Button
 # Uses Button as the root so click handling is built-in.
 
 @export var icon_kind: String = "briefcase"
+# If a translation key (e.g. "APP_RECYCLE") this gets tr()'d at draw time.
+# Otherwise it's used as-is.
 @export var icon_label: String = "App"
 
 func _ready() -> void:
 	custom_minimum_size = Vector2(86, 86)
 	flat = true
 	text = ""
-	# We'll draw the icon ourselves
+	# Refresh whenever the language changes
+	if Engine.has_singleton("LanguageManager"):
+		pass  # LanguageManager is autoload, not a singleton
+	LanguageManager.language_changed.connect(func(_l): queue_redraw())
 	queue_redraw()
 
 func _draw() -> void:
@@ -24,17 +29,18 @@ func _draw() -> void:
 		"settings": _draw_gear(center)
 		"tutorial": _draw_book(center)
 		"quit": _draw_door(center)
-	# Label
+	# Label — resolve through tr() in case icon_label is a translation key
+	var label_text := tr(icon_label) if icon_label != "" else ""
 	var font := get_theme_default_font()
 	var font_size := 14
-	var text_size := font.get_string_size(icon_label, HORIZONTAL_ALIGNMENT_CENTER, -1.0, font_size)
+	var text_size := font.get_string_size(label_text, HORIZONTAL_ALIGNMENT_CENTER, -1.0, font_size)
 	var label_pos := Vector2(size.x / 2 - text_size.x / 2, size.y - 16)
 	# Black outline for readability
 	for dx in [-1, 0, 1]:
 		for dy in [-1, 0, 1]:
 			if dx != 0 or dy != 0:
-				draw_string(font, label_pos + Vector2(dx, dy), icon_label, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.BLACK)
-	draw_string(font, label_pos, icon_label, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
+				draw_string(font, label_pos + Vector2(dx, dy), label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.BLACK)
+	draw_string(font, label_pos, label_text, HORIZONTAL_ALIGNMENT_LEFT, -1, font_size, Color.WHITE)
 
 func _draw_briefcase(c: Vector2) -> void:
 	# Brown briefcase

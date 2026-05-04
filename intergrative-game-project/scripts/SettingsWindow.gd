@@ -40,7 +40,7 @@ func _refresh_text() -> void:
 	display_btn.text = tr("FULLSCREEN") if SettingsManager.fullscreen else tr("WINDOWED")
 	music_label.text = tr("MUSIC_VOLUME") + ":"
 	sfx_label.text = tr("SFX_VOLUME") + ":"
-	tutorial_btn.text = tr("TUTORIAL")
+	tutorial_btn.text = tr("SHOW_TUTORIAL")
 
 func _click() -> void:
 	if click_sfx:
@@ -76,8 +76,9 @@ func _on_tutorial() -> void:
 func _play_chain(lines: Array) -> void:
 	if lines.is_empty():
 		return
-	var line: String = lines.pop_front()
-	Buddy.show_line(line, func(): _play_chain(lines))
+	# Pool items are translation keys — resolve before display.
+	var key: String = lines.pop_front()
+	Buddy.show_line(tr(key), func(): _play_chain(lines))
 
 func _on_title_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:

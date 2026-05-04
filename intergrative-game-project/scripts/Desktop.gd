@@ -102,10 +102,11 @@ func _play_tutorial() -> void:
 func _play_chain(lines: Array) -> void:
 	if lines.is_empty():
 		return
-	var line: String = lines.pop_front()
-	Buddy.show_line(line, func(): _play_chain(lines))
+	# Pool items are translation keys — resolve before display.
+	var key: String = lines.pop_front()
+	Buddy.show_line(tr(key), func(): _play_chain(lines))
 
 func _on_start() -> void:
 	_click()
 	# The Start menu is just a nag for now, encouraging them to play
-	Buddy.show_line("Start menu? Just play the game! It's the briefcase!")
+	Buddy.show_line(tr("BUDDY_START_MENU"))

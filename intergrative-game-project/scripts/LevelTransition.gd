@@ -9,17 +9,24 @@ extends Control
 var _can_continue: bool = false
 
 func _ready() -> void:
-	level_label.text = "LEVEL %d / %d" % [GameState.current_level, GameState.TOTAL_LEVELS]
-	hint_label.text = "Catch your breath..."
-	continue_btn.text = "Start Level"
+	_refresh_text()
 	continue_btn.pressed.connect(_on_continue)
+	LanguageManager.language_changed.connect(func(_l): _refresh_text())
 	# Buddy speaks the pep talk, then we let the player continue
 	await get_tree().create_timer(0.4, true).timeout
 	Buddy.show_from_pool(BuddyDialog.BETWEEN_LEVELS, func(): _allow_continue())
 
+func _refresh_text() -> void:
+	level_label.text = tr("LEVEL_X_OF_Y") % [GameState.current_level, GameState.TOTAL_LEVELS]
+	if not _can_continue:
+		hint_label.text = tr("LEVEL_BREATHE")
+	else:
+		hint_label.text = tr("LEVEL_HINT")
+	continue_btn.text = tr("LEVEL_START")
+
 func _allow_continue() -> void:
 	_can_continue = true
-	hint_label.text = "Press SPACE or click to start the next level."
+	hint_label.text = tr("LEVEL_HINT")
 	continue_btn.grab_focus()
 
 func _input(event: InputEvent) -> void:

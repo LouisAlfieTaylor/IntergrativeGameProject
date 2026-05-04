@@ -196,10 +196,10 @@ func _update_clock() -> void:
 	clock_label.text = "%d:%02d %s" % [hour, t.minute, ampm]
 
 func _on_close() -> void:
-	Buddy.show_line("Quitting? You'll lose this run!", func(): _quit_to_desktop())
+	Buddy.show_line(tr("BUDDY_QUIT_GAME"), func(): _quit_to_desktop())
 
 func _on_minimize_or_max() -> void:
-	Buddy.show_line("Heh, those buttons are just for show. Get back in there!")
+	Buddy.show_line(tr("BUDDY_WINDOW_BTN"))
 
 func _quit_to_desktop() -> void:
 	get_tree().paused = false

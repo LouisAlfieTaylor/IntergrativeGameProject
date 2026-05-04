@@ -9,6 +9,7 @@ extends CanvasLayer
 @onready var popup: Label = $Root/Popup
 @onready var burst_indicator: Label = $Root/BurstIndicator
 @onready var level_label: Label = $Root/Top/StressPanel/VBox/LevelLabel
+@onready var hint_label: Label = $Root/Bottom/HintPanel/Hint
 
 var _popup_tween: Tween
 
@@ -21,6 +22,8 @@ func _ready() -> void:
 func _refresh_text() -> void:
 	stress_label.text = tr("STRESS")
 	focus_label.text = tr("FOCUS")
+	if hint_label:
+		hint_label.text = tr("HUD_HINT")
 
 func set_time_left(seconds: float) -> void:
 	var s = int(ceil(seconds))
@@ -30,7 +33,7 @@ func set_time_left(seconds: float) -> void:
 
 func set_level(current: int, total: int) -> void:
 	if level_label:
-		level_label.text = "LEVEL %d / %d" % [current, total]
+		level_label.text = tr("LEVEL_X_OF_Y") % [current, total]
 
 func set_score(value: int) -> void:
 	score_label.text = "%s  %d" % [tr("SCORE"), value]

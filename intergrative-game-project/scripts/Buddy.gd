@@ -83,12 +83,14 @@ func show_line(text: String, on_done: Callable = Callable()) -> void:
 	_type_loop()
 
 func show_from_pool(pool: Array, on_done: Callable = Callable()) -> void:
-	# Pick a non-repeating line for this specific pool
+	# Pool entries are translation keys; resolve via tr() before display.
+	# Track last picked KEY (not the translated text) so re-rolls are stable
+	# across language changes.
 	var pool_id := str(pool.hash())
-	var last = _last_line.get(pool_id, "")
-	var line: String = BuddyDialog.pick(pool, last)
-	_last_line[pool_id] = line
-	show_line(line, on_done)
+	var last_key = _last_line.get(pool_id, "")
+	var key: String = BuddyDialog.pick(pool, last_key)
+	_last_line[pool_id] = key
+	show_line(tr(key), on_done)
 
 func _type_loop() -> void:
 	while _typing and _typed_chars < _full_text.length():

@@ -1,123 +1,60 @@
 extends RefCounted
 class_name BuddyDialog
 
-# Pools of dialogue lines per situation. Used by Buddy.gd to pick a random line
-# without repeating the most recent one. Translation keys are resolved via tr().
+# Pools of translation KEYS for buddy lines. Buddy.gd resolves them via tr()
+# at display time, so French players see French.
 
 const TUTORIAL_INTRO := [
-	"Hey there! I'm Floppy. Welcome to your shift!",
-	"Look at you! First day on the job. Let's get you set up!",
-	"Hi pal! Ready to crunch some tasks today?",
-	"Beep boop! Floppy here, your friendly assistant!",
-	"Welcome welcome! Let me show you the ropes.",
-	"Hi! I'll be popping up to help when you need it. Or just to chat!",
-	"Look who finally booted up the game! Hi!",
-	"It's me, Floppy! I'll be your guide for today.",
+	"BUDDY_INTRO_1", "BUDDY_INTRO_2", "BUDDY_INTRO_3", "BUDDY_INTRO_4",
+	"BUDDY_INTRO_5", "BUDDY_INTRO_6", "BUDDY_INTRO_7", "BUDDY_INTRO_8",
 ]
 
 const TUTORIAL_BODY := [
-	"Use the arrow keys or WASD to wander around the office.",
-	"When a task icon appears, walk up to it and press SPACE.",
-	"Tap SPACE again when the marker is in the GREEN zone — perfect timing!",
-	"Holding SHIFT lets you slow time. Use it when things pile up!",
-	"If you miss too many tasks, your stress meter fills up. Don't burn out!",
+	"BUDDY_BODY_1", "BUDDY_BODY_2", "BUDDY_BODY_3", "BUDDY_BODY_4", "BUDDY_BODY_5",
 ]
 
 const FIRST_BOOT := [
-	"Whew, you made it! Let's get to work.",
-	"Welcome to your first shift! Don't worry, I'll be around.",
-	"Hi! Big day today. Want to know how this all works?",
+	"BUDDY_FIRSTBOOT_1", "BUDDY_FIRSTBOOT_2", "BUDDY_FIRSTBOOT_3",
 ]
 
-# Reactions when the player misses or expires a task (rare in-level)
 const REACT_MISS := [
-	"Yikes! Don't sweat it, you've got this.",
-	"Oof. Shake it off, champ!",
-	"That one got away! Onto the next.",
-	"Don't worry, even pros miss sometimes.",
-	"It's fine! Honestly! I wasn't even looking.",
-	"Whoops-a-daisy! Try to relax.",
-	"Hey hey hey — eyes on the next one.",
-	"That's nothing! You're still doing great.",
-	"Bah, that one was rigged. I saw it.",
-	"Plot twist! You'll get the next ten in a row.",
+	"BUDDY_MISS_1", "BUDDY_MISS_2", "BUDDY_MISS_3", "BUDDY_MISS_4", "BUDDY_MISS_5",
+	"BUDDY_MISS_6", "BUDDY_MISS_7", "BUDDY_MISS_8", "BUDDY_MISS_9", "BUDDY_MISS_10",
 ]
 
-# Reactions when the player nails a perfect task (rare in-level)
 const REACT_PERFECT := [
-	"BAM! That was beautiful!",
-	"Sheesh, you're on fire today!",
-	"Now THAT is professional work!",
-	"Did you SEE that? I saw that!",
-	"Ten out of ten. Hire this person!",
-	"You're making me look bad!",
-	"Buddy, that was poetry in motion.",
-	"Outstanding! Keep it rolling!",
-	"That was a corporate KPI miracle.",
-	"Floppy seal of approval!",
+	"BUDDY_PERFECT_1", "BUDDY_PERFECT_2", "BUDDY_PERFECT_3", "BUDDY_PERFECT_4", "BUDDY_PERFECT_5",
+	"BUDDY_PERFECT_6", "BUDDY_PERFECT_7", "BUDDY_PERFECT_8", "BUDDY_PERFECT_9", "BUDDY_PERFECT_10",
 ]
 
-# Between-level pep talks
 const BETWEEN_LEVELS := [
-	"Round one done! Stretch those fingers.",
-	"Nice work! Ready for the next one?",
-	"Phew, what a shift. Let's keep the momentum!",
-	"Onwards and upwards! Next level coming up.",
-	"You're doing amazing. Get ready, it gets spicy.",
-	"Quick break, then back at it. You've got this!",
-	"Look at you go! Don't slow down now.",
-	"Catch your breath. Next round's about to start.",
-	"That was a warm-up. Real work starts now!",
-	"Halfway there or all the way? Only one way to find out!",
+	"BUDDY_BETWEEN_1", "BUDDY_BETWEEN_2", "BUDDY_BETWEEN_3", "BUDDY_BETWEEN_4", "BUDDY_BETWEEN_5",
+	"BUDDY_BETWEEN_6", "BUDDY_BETWEEN_7", "BUDDY_BETWEEN_8", "BUDDY_BETWEEN_9", "BUDDY_BETWEEN_10",
 ]
 
-# When the player clicks a non-game app on the desktop
 const APP_NAG := [
-	"Hey! That's not the game. Crunch Time is the briefcase icon!",
-	"Easy there, that one's just a placeholder. The game's over here!",
-	"I'd love to let you, but our budget didn't cover that app.",
-	"Boring! Click Crunch Time. That's where the fun lives.",
-	"Pssst, that icon is decoration. Try the briefcase!",
-	"Click click click — but not THAT one! Try the game!",
-	"You wouldn't BELIEVE how broken that app is. Skip it!",
-	"That's a Windows joke we couldn't afford. Crunch Time, please!",
-	"Oh sweetie no. The game is the briefcase. Believe me.",
-	"That app has a virus. Probably. Don't risk it!",
+	"BUDDY_NAG_1", "BUDDY_NAG_2", "BUDDY_NAG_3", "BUDDY_NAG_4", "BUDDY_NAG_5",
+	"BUDDY_NAG_6", "BUDDY_NAG_7", "BUDDY_NAG_8", "BUDDY_NAG_9", "BUDDY_NAG_10",
 ]
 
 const APP_NAG_RECYCLE := [
-	"The trash is empty. Mostly because there's nothing in it.",
-	"You're really committed to this trash bit, huh?",
-	"Hey, that's just a 16x16 icon. There's nothing inside.",
-	"Stop poking the trash can! It's empty!",
+	"BUDDY_RECYCLE_1", "BUDDY_RECYCLE_2", "BUDDY_RECYCLE_3", "BUDDY_RECYCLE_4",
 ]
 
 const APP_NAG_BROWSER := [
-	"It's 1998 in here, the internet is dial-up only. Skip it.",
-	"Loading... loading... still loading... yeah, no.",
-	"You'd just get pop-up ads. I'm sparing you!",
-	"Internet Distract is closed. Crunch Time is open!",
+	"BUDDY_BROWSER_1", "BUDDY_BROWSER_2", "BUDDY_BROWSER_3", "BUDDY_BROWSER_4",
 ]
 
 const QUIT_CONFIRM := [
-	"Aw, leaving so soon? I'll save your spot!",
-	"Going already? Floppy will miss you!",
-	"Ok. Ok ok. I'll be here. Always.",
-	"Bye for now! Reboot whenever you want.",
+	"BUDDY_QUITDESK_1", "BUDDY_QUITDESK_2", "BUDDY_QUITDESK_3", "BUDDY_QUITDESK_4",
 ]
 
 const WIN_CONGRATS := [
-	"You did it! Whole shift, all yours!",
-	"Wooo! Take that, deadlines!",
-	"Top of the floppy class! Well done!",
-	"Crunch Time crunched! Beautiful.",
+	"BUDDY_WIN_1", "BUDDY_WIN_2", "BUDDY_WIN_3", "BUDDY_WIN_4",
 ]
 
 const LOSE_COMFORT := [
-	"Oh no, the stress got you. Take a breath, try again!",
-	"That's burnout, buddy. We've all been there.",
-	"Don't blame yourself. The corporate grind is HARD.",
-	"Round again? I believe in you!",
+	"BUDDY_LOSE_1", "BUDDY_LOSE_2", "BUDDY_LOSE_3", "BUDDY_LOSE_4",
 ]
 
 static func pick(pool: Array, last: String = "") -> String:
