@@ -144,10 +144,8 @@ position = Vector2(570, 288)
 
 [node name="HUD" parent="GameWindow/ViewportContainer/SubViewport" instance=ExtResource("5_hud")]
 
-[node name="PopupLayer" type="Control" parent="GameWindow/ViewportContainer/SubViewport"]
-offset_right = 1140.0
-offset_bottom = 576.0
-mouse_filter = 1
+[node name="PopupLayer" type="CanvasLayer" parent="GameWindow/ViewportContainer/SubViewport"]
+layer = 11
 
 [node name="OverlayLayer" type="CanvasLayer" parent="GameWindow/ViewportContainer/SubViewport"]
 layer = 5

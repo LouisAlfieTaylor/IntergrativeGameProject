@@ -30,7 +30,7 @@ signal round_ended(won: bool)
 @onready var min_btn: Button = $GameWindow/TitleBar/HBox/MinBtn
 @onready var max_btn: Button = $GameWindow/TitleBar/HBox/MaxBtn
 @onready var title_label: Label = $GameWindow/TitleBar/HBox/Title
-@onready var task_layer: Control = sv.get_node("PopupLayer")
+@onready var task_layer: CanvasLayer = sv.get_node("PopupLayer")
 
 # Per-level config — set by _apply_level_config
 var round_time: float = 60.0
@@ -99,8 +99,10 @@ func _ready() -> void:
 	if music.stream is AudioStreamWAV:
 		music.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	music.play()
-	_setup_level_modifiers()
 	_start_round()
+	# Modifiers must be set up AFTER _start_round so round_active is true
+	# when the popup timer schedules its first tick.
+	_setup_level_modifiers()
 
 func _apply_level_config(level: int) -> void:
 	# Difficulty progression intentionally gentle. Level 3 is meant to feel
@@ -158,7 +160,9 @@ func _setup_level_modifiers() -> void:
 		_popup_timer.one_shot = true
 		_popup_timer.timeout.connect(_on_popup_timer)
 		add_child(_popup_timer)
-		_schedule_next_popup()
+		# First popup arrives fast so the player notices the level twist
+		_popup_timer.wait_time = randf_range(3.0, 5.0)
+		_popup_timer.start()
 
 func _schedule_next_popup() -> void:
 	if not has_popups or not round_active:
@@ -176,8 +180,9 @@ func _on_popup_timer() -> void:
 
 func _spawn_popup() -> void:
 	var popup := POPUP_SCENE.instantiate()
-	var px = randf_range(60, 1140 - 280)
-	var py = randf_range(80, 576 - 200)
+	# Stay clear of HUD top bar (~y<88) and bottom bar (~y>508)
+	var px = randf_range(60, 860)
+	var py = randf_range(100, 350)
 	popup.position = Vector2(px, py)
 	task_layer.add_child(popup)
 
