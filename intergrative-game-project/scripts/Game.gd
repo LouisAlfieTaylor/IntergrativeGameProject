@@ -1,24 +1,31 @@
-extends Node2D
+extends Control
 
 # Per-level config
 const STRESS_MAX := 100.0
 const STRESS_RELIEF := 0.6
 const TASK_SCENE := preload("res://scenes/Task.tscn")
 const MAX_BUDDY_CAMEOS_PER_LEVEL := 2
-const BUDDY_CAMEO_CHANCE := 0.18  # rolled per task event, capped by counter
+const BUDDY_CAMEO_CHANCE := 0.18
 
 signal round_ended(won: bool)
 
-@onready var player: CharacterBody2D = $Player
-@onready var hud: CanvasLayer = $HUD
-@onready var tasks_root: Node2D = $Tasks
-@onready var spawn_points: Node2D = $SpawnPoints
+@onready var sv: SubViewport = $GameWindow/ViewportContainer/SubViewport
+@onready var player: CharacterBody2D = sv.get_node("World/Player")
+@onready var hud: CanvasLayer = sv.get_node("HUD")
+@onready var tasks_root: Node2D = sv.get_node("World/Tasks")
+@onready var spawn_points: Node2D = sv.get_node("World/SpawnPoints")
+@onready var stress_overlay: ColorRect = sv.get_node("OverlayLayer/StressOverlay")
+@onready var flash_overlay: ColorRect = sv.get_node("OverlayLayer/FlashOverlay")
 @onready var music: AudioStreamPlayer = $Music
-@onready var stress_overlay: ColorRect = $UILayer/StressOverlay
-@onready var flash_overlay: ColorRect = $UILayer/FlashOverlay
-@onready var pause_layer: Control = $UILayer/PauseMenu
+@onready var pause_layer: Control = $PauseMenuLayer/PauseMenu
 @onready var spawn_timer: Timer = $SpawnTimer
 @onready var round_timer: Timer = $RoundTimer
+@onready var clock_label: Label = $Taskbar/HBox/ClockPanel/Clock
+@onready var clock_timer: Timer = $ClockTimer
+@onready var close_btn: Button = $GameWindow/TitleBar/HBox/CloseBtn
+@onready var min_btn: Button = $GameWindow/TitleBar/HBox/MinBtn
+@onready var max_btn: Button = $GameWindow/TitleBar/HBox/MaxBtn
+@onready var title_label: Label = $GameWindow/TitleBar/HBox/Title
 
 var round_time: float = 60.0
 var spawn_min: float = 1.5
@@ -43,7 +50,6 @@ func _ready() -> void:
 	time_left = round_time
 
 	player.add_to_group("player")
-	player.global_position = Vector2(640, 360)
 	player.focus_changed.connect(hud.set_focus)
 	player.focus_burst_started.connect(hud.show_focus_burst)
 	player.focus_burst_ended.connect(hud.hide_focus_burst)
@@ -57,14 +63,42 @@ func _ready() -> void:
 	round_timer.timeout.connect(_on_round_tick)
 	round_timer.wait_time = 1.0
 
+	clock_timer.timeout.connect(_update_clock)
+	_update_clock()
+
+	close_btn.pressed.connect(_on_close)
+	min_btn.pressed.connect(_on_minimize_or_max)
+	max_btn.pressed.connect(_on_minimize_or_max)
+	title_label.text = "Crunch Time - briefcase.exe (Level %d)" % GameState.current_level
+
 	pause_layer.visible = false
 	if music.stream is AudioStreamWAV:
 		music.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
 	music.play()
 	_start_round()
 
+func _update_clock() -> void:
+	var t = Time.get_time_dict_from_system()
+	var hour: int = t.hour
+	var ampm := "AM" if hour < 12 else "PM"
+	hour = hour % 12
+	if hour == 0:
+		hour = 12
+	clock_label.text = "%d:%02d %s" % [hour, t.minute, ampm]
+
+func _on_close() -> void:
+	# X button — confirm via Buddy then back to desktop
+	Buddy.show_line("Quitting? You'll lose this run!", func(): _quit_to_desktop())
+
+func _on_minimize_or_max() -> void:
+	# Min/Max are decorative; nudge the player back to playing
+	Buddy.show_line("Heh, those buttons are just for show. Get back in there!")
+
+func _quit_to_desktop() -> void:
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://scenes/Desktop.tscn")
+
 func _apply_level_config(level: int) -> void:
-	# Levels get faster and spawn more aggressively as they progress
 	match level:
 		1:
 			round_time = 60.0
@@ -81,7 +115,6 @@ func _apply_level_config(level: int) -> void:
 			task_duration_start = 8.0
 			task_duration_end = 5.0
 		_:
-			# Level 3 (and any later)
 			round_time = 90.0
 			spawn_min = 1.0
 			spawn_max = 2.2
@@ -213,14 +246,11 @@ func _end_round(survived: bool) -> void:
 
 func _go_to_next_scene(won: bool) -> void:
 	if not won:
-		# Lost — game over screen
 		get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
 		return
 	if GameState.is_final_level():
-		# Won the whole run — game over (win) screen
 		get_tree().change_scene_to_file("res://scenes/GameOver.tscn")
 		return
-	# Won this level, more to play — show level transition
 	GameState.advance_level()
 	get_tree().change_scene_to_file("res://scenes/LevelTransition.tscn")
 
@@ -235,5 +265,4 @@ func restart() -> void:
 	get_tree().change_scene_to_file("res://scenes/Game.tscn")
 
 func to_main_menu() -> void:
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/Desktop.tscn")
+	_quit_to_desktop()
