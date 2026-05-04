@@ -103,10 +103,9 @@ offset_top = 26.0
 offset_right = 1140.0
 offset_bottom = 602.0
 stretch = true
-mouse_filter = 1
 
 [node name="SubViewport" type="SubViewport" parent="GameWindow/ViewportContainer"]
-handle_input_locally = false
+handle_input_locally = true
 size = Vector2i(1140, 576)
 render_target_update_mode = 4
 
@@ -144,6 +143,11 @@ position = Vector2(960, 420)
 position = Vector2(570, 288)
 
 [node name="HUD" parent="GameWindow/ViewportContainer/SubViewport" instance=ExtResource("5_hud")]
+
+[node name="PopupLayer" type="Control" parent="GameWindow/ViewportContainer/SubViewport"]
+offset_right = 1140.0
+offset_bottom = 576.0
+mouse_filter = 1
 
 [node name="OverlayLayer" type="CanvasLayer" parent="GameWindow/ViewportContainer/SubViewport"]
 layer = 5
