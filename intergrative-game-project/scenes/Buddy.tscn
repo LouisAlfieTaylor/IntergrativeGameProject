@@ -1,0 +1,68 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/Buddy.gd" id="1_buddy"]
+[ext_resource type="Script" path="res://scripts/BuddyVisual.gd" id="2_visual"]
+
+[sub_resource type="StyleBoxFlat" id="SB_bubble"]
+bg_color = Color(1, 1, 0.85, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0, 0, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+content_margin_left = 12.0
+content_margin_top = 10.0
+content_margin_right = 12.0
+content_margin_bottom = 10.0
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 4
+shadow_offset = Vector2(2, 2)
+
+[node name="Buddy" type="CanvasLayer"]
+layer = 100
+script = ExtResource("1_buddy")
+
+[node name="Root" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="Anchor" type="Control" parent="Root"]
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -480.0
+offset_top = -200.0
+offset_right = -32.0
+offset_bottom = -32.0
+mouse_filter = 2
+
+[node name="Bubble" type="PanelContainer" parent="Root/Anchor"]
+anchor_right = 1.0
+offset_right = -90.0
+offset_bottom = 130.0
+theme_override_styles/panel = SubResource("SB_bubble")
+mouse_filter = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Root/Anchor/Bubble"]
+custom_minimum_size = Vector2(280, 0)
+
+[node name="Label" type="Label" parent="Root/Anchor/Bubble/MarginContainer"]
+text = ""
+autowrap_mode = 3
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="CharHolder" type="Node2D" parent="Root/Anchor"]
+position = Vector2(388, 78)
+
+[node name="CharVisual" type="Node2D" parent="Root/Anchor/CharHolder"]
+script = ExtResource("2_visual")
+
+[node name="HideTimer" type="Timer" parent="."]
+one_shot = true

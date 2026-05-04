@@ -84,6 +84,11 @@ show_percentage = false
 theme_override_styles/background = SubResource("SB_stress_bg")
 theme_override_styles/fill = SubResource("SB_stress_fill")
 
+[node name="LevelLabel" type="Label" parent="Root/Top/StressPanel/VBox"]
+text = "LEVEL 1 / 3"
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_font_sizes/font_size = 14
+
 [node name="TimePanel" type="PanelContainer" parent="Root/Top"]
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 0.6

@@ -8,6 +8,7 @@ extends CanvasLayer
 @onready var focus_bar: ProgressBar = $Root/Bottom/FocusPanel/VBox/Bar
 @onready var popup: Label = $Root/Popup
 @onready var burst_indicator: Label = $Root/BurstIndicator
+@onready var level_label: Label = $Root/Top/StressPanel/VBox/LevelLabel
 
 var _popup_tween: Tween
 
@@ -26,6 +27,10 @@ func set_time_left(seconds: float) -> void:
 	var m = s / 60
 	var rs = s % 60
 	time_label.text = "%s  %02d:%02d" % [tr("TIME"), m, rs]
+
+func set_level(current: int, total: int) -> void:
+	if level_label:
+		level_label.text = "LEVEL %d / %d" % [current, total]
 
 func set_score(value: int) -> void:
 	score_label.text = "%s  %d" % [tr("SCORE"), value]

@@ -1,0 +1,181 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/Boot.gd" id="1_boot"]
+[ext_resource type="FontFile" path="res://assets/fonts/Px437_IBM_BIOS.ttf" id="2_bios_font"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_click.wav" id="3_beep"]
+
+[sub_resource type="StyleBoxFlat" id="SB_login_window"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+shadow_color = Color(0, 0, 0, 0.6)
+shadow_size = 6
+shadow_offset = Vector2(3, 3)
+
+[sub_resource type="StyleBoxFlat" id="SB_login_titlebar"]
+bg_color = Color(0.0, 0.0, 0.5, 1)
+content_margin_left = 6.0
+content_margin_top = 3.0
+content_margin_right = 6.0
+content_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="SB_progress_bg"]
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.55, 0.55, 1)
+
+[sub_resource type="StyleBoxFlat" id="SB_progress_fill"]
+bg_color = Color(0, 0, 0.55, 1)
+
+[node name="Boot" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_boot")
+
+[node name="BIOSLayer" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0, 1)
+mouse_filter = 2
+
+[node name="Margin" type="MarginContainer" parent="BIOSLayer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="BIOSText" type="Label" parent="BIOSLayer/Margin"]
+text = ""
+theme_override_colors/font_color = Color(0.85, 0.85, 0.85, 1)
+theme_override_fonts/font = ExtResource("2_bios_font")
+theme_override_font_sizes/font_size = 16
+
+[node name="LoadingLayer" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0, 0, 0.5, 1)
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="LoadingLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -60.0
+offset_right = 300.0
+offset_bottom = 60.0
+theme_override_constants/separation = 18
+
+[node name="Title" type="Label" parent="LoadingLayer/VBox"]
+text = "C R U N C H  9 5"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 36
+
+[node name="Bar" type="ProgressBar" parent="LoadingLayer/VBox"]
+custom_minimum_size = Vector2(0, 22)
+max_value = 100.0
+value = 0.0
+show_percentage = false
+theme_override_styles/background = SubResource("SB_progress_bg")
+theme_override_styles/fill = SubResource("SB_progress_fill")
+
+[node name="Status" type="Label" parent="LoadingLayer/VBox"]
+text = "Loading..."
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.85, 0.85, 1, 1)
+theme_override_font_sizes/font_size = 16
+
+[node name="LoginLayer" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color(0.0, 0.5, 0.5, 1)
+mouse_filter = 2
+
+[node name="Window" type="Panel" parent="LoginLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -110.0
+offset_right = 200.0
+offset_bottom = 110.0
+theme_override_styles/panel = SubResource("SB_login_window")
+
+[node name="TitleBar" type="Panel" parent="LoginLayer/Window"]
+offset_right = 400.0
+offset_bottom = 24.0
+theme_override_styles/panel = SubResource("SB_login_titlebar")
+
+[node name="TitleLabel" type="Label" parent="LoginLayer/Window/TitleBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 2.0
+text = "Enter Network Password"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+vertical_alignment = 1
+
+[node name="Content" type="VBoxContainer" parent="LoginLayer/Window"]
+offset_left = 16.0
+offset_top = 36.0
+offset_right = 384.0
+offset_bottom = 210.0
+theme_override_constants/separation = 8
+
+[node name="Hint" type="Label" parent="LoginLayer/Window/Content"]
+text = "Type your name to log on. (or just click OK)"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="UserLabel" type="Label" parent="LoginLayer/Window/Content"]
+text = "User name:"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="UserField" type="LineEdit" parent="LoginLayer/Window/Content"]
+custom_minimum_size = Vector2(0, 26)
+text = "USER"
+theme_override_font_sizes/font_size = 14
+
+[node name="PassLabel" type="Label" parent="LoginLayer/Window/Content"]
+text = "Password:"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="PassField" type="LineEdit" parent="LoginLayer/Window/Content"]
+custom_minimum_size = Vector2(0, 26)
+text = "********"
+secret = true
+theme_override_font_sizes/font_size = 14
+
+[node name="Buttons" type="HBoxContainer" parent="LoginLayer/Window/Content"]
+alignment = 2
+theme_override_constants/separation = 8
+
+[node name="OKBtn" type="Button" parent="LoginLayer/Window/Content/Buttons"]
+custom_minimum_size = Vector2(80, 28)
+text = "OK"
+theme_override_font_sizes/font_size = 14
+
+[node name="CancelBtn" type="Button" parent="LoginLayer/Window/Content/Buttons"]
+custom_minimum_size = Vector2(80, 28)
+text = "Cancel"
+theme_override_font_sizes/font_size = 14
+
+[node name="BIOSBeep" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_beep")
+bus = "SFX"

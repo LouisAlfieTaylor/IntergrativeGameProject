@@ -1,0 +1,44 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/LevelTransition.gd" id="1_lt"]
+[ext_resource type="Script" path="res://scripts/MenuBackground.gd" id="2_bg"]
+
+[node name="LevelTransition" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_lt")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="Center" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="VBox" type="VBoxContainer" parent="Center"]
+custom_minimum_size = Vector2(560, 0)
+theme_override_constants/separation = 18
+alignment = 1
+
+[node name="LevelLabel" type="Label" parent="Center/VBox"]
+text = "LEVEL 2 / 3"
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 0.95, 0.6, 1)
+theme_override_colors/font_outline_color = Color(0.10, 0.13, 0.22, 1)
+theme_override_constants/outline_size = 8
+theme_override_font_sizes/font_size = 60
+
+[node name="Hint" type="Label" parent="Center/VBox"]
+text = "Catch your breath..."
+horizontal_alignment = 1
+theme_override_colors/font_color = Color(0.95, 0.97, 1, 1)
+theme_override_font_sizes/font_size = 22
+
+[node name="Spacer" type="Control" parent="Center/VBox"]
+custom_minimum_size = Vector2(0, 24)
+
+[node name="ContinueBtn" type="Button" parent="Center/VBox"]
+custom_minimum_size = Vector2(220, 44)
+text = "Start Level"
+theme_override_font_sizes/font_size = 22

@@ -1,0 +1,273 @@
+[gd_scene load_steps=11 format=3]
+
+[ext_resource type="Script" path="res://scripts/Desktop.gd" id="1_desktop"]
+[ext_resource type="Script" path="res://scripts/DesktopBackground.gd" id="2_bg"]
+[ext_resource type="Script" path="res://scripts/AppIcon.gd" id="3_icon"]
+[ext_resource type="Script" path="res://scripts/SettingsWindow.gd" id="4_window"]
+[ext_resource type="AudioStream" path="res://assets/audio/sfx_click.wav" id="5_click"]
+
+[sub_resource type="StyleBoxFlat" id="SB_window"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_size = 4
+shadow_offset = Vector2(2, 2)
+
+[sub_resource type="StyleBoxFlat" id="SB_titlebar"]
+bg_color = Color(0.0, 0.0, 0.5, 1)
+border_width_left = 0
+border_width_top = 0
+border_width_right = 0
+border_width_bottom = 0
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="SB_taskbar"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+border_width_top = 2
+border_color = Color(1, 1, 1, 1)
+content_margin_left = 4.0
+content_margin_top = 2.0
+content_margin_right = 4.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="SB_taskbar_inset"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.45, 0.45, 0.45, 1)
+content_margin_left = 6.0
+content_margin_top = 2.0
+content_margin_right = 6.0
+content_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="SB_content"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+
+[node name="Desktop" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+script = ExtResource("1_desktop")
+
+[node name="Background" type="Node2D" parent="."]
+script = ExtResource("2_bg")
+
+[node name="IconGrid" type="VBoxContainer" parent="."]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 116.0
+offset_bottom = 600.0
+theme_override_constants/separation = 12
+
+[node name="Game" type="Button" parent="IconGrid"]
+custom_minimum_size = Vector2(86, 86)
+flat = true
+script = ExtResource("3_icon")
+icon_kind = "briefcase"
+icon_label = "Crunch Time"
+metadata/action = "play"
+
+[node name="MyComputer" type="Button" parent="IconGrid"]
+custom_minimum_size = Vector2(86, 86)
+flat = true
+script = ExtResource("3_icon")
+icon_kind = "computer"
+icon_label = "My Computer"
+metadata/action = "nag"
+metadata/nag_pool = "default"
+
+[node name="Recycle" type="Button" parent="IconGrid"]
+custom_minimum_size = Vector2(86, 86)
+flat = true
+script = ExtResource("3_icon")
+icon_kind = "recycle"
+icon_label = "Recycle Bin"
+metadata/action = "nag"
+metadata/nag_pool = "recycle"
+
+[node name="Browser" type="Button" parent="IconGrid"]
+custom_minimum_size = Vector2(86, 86)
+flat = true
+script = ExtResource("3_icon")
+icon_kind = "browser"
+icon_label = "Internet"
+metadata/action = "nag"
+metadata/nag_pool = "browser"
+
+[node name="Notepad" type="Button" parent="IconGrid"]
+custom_minimum_size = Vector2(86, 86)
+flat = true
+script = ExtResource("3_icon")
+icon_kind = "notepad"
+icon_label = "Notepad"
+metadata/action = "nag"
+metadata/nag_pool = "default"
+
+[node name="Quit" type="Button" parent="IconGrid"]
+custom_minimum_size = Vector2(86, 86)
+flat = true
+script = ExtResource("3_icon")
+icon_kind = "quit"
+icon_label = "Shut Down"
+metadata/action = "quit"
+
+[node name="Windows" type="Control" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+mouse_filter = 2
+
+[node name="SettingsWindow" type="Panel" parent="Windows"]
+offset_left = 380.0
+offset_top = 90.0
+offset_right = 900.0
+offset_bottom = 470.0
+theme_override_styles/panel = SubResource("SB_window")
+script = ExtResource("4_window")
+
+[node name="TitleBar" type="Panel" parent="Windows/SettingsWindow"]
+offset_right = 520.0
+offset_bottom = 24.0
+theme_override_styles/panel = SubResource("SB_titlebar")
+mouse_filter = 1
+
+[node name="HBox" type="HBoxContainer" parent="Windows/SettingsWindow/TitleBar"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 6.0
+offset_top = 2.0
+offset_right = -6.0
+offset_bottom = -2.0
+mouse_filter = 2
+
+[node name="Title" type="Label" parent="Windows/SettingsWindow/TitleBar/HBox"]
+size_flags_horizontal = 3
+text = "Settings - Crunch Time"
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 14
+vertical_alignment = 1
+mouse_filter = 2
+
+[node name="CloseBtn" type="Button" parent="Windows/SettingsWindow/TitleBar/HBox"]
+custom_minimum_size = Vector2(20, 20)
+text = "X"
+theme_override_font_sizes/font_size = 12
+
+[node name="Content" type="PanelContainer" parent="Windows/SettingsWindow"]
+offset_left = 4.0
+offset_top = 28.0
+offset_right = 516.0
+offset_bottom = 376.0
+theme_override_styles/panel = SubResource("SB_content")
+
+[node name="VBox" type="VBoxContainer" parent="Windows/SettingsWindow/Content"]
+theme_override_constants/separation = 14
+
+[node name="Grid" type="GridContainer" parent="Windows/SettingsWindow/Content/VBox"]
+columns = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 14
+
+[node name="LangLabel" type="Label" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+custom_minimum_size = Vector2(160, 0)
+text = "Language:"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="LangBtn" type="Button" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+custom_minimum_size = Vector2(220, 28)
+text = "English"
+theme_override_font_sizes/font_size = 14
+
+[node name="DisplayLabel" type="Label" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+text = "Display Mode:"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="DisplayBtn" type="Button" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+custom_minimum_size = Vector2(220, 28)
+text = "Windowed"
+theme_override_font_sizes/font_size = 14
+
+[node name="MusicLabel" type="Label" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+text = "Music Volume:"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="MusicSlider" type="HSlider" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+custom_minimum_size = Vector2(220, 28)
+max_value = 1.0
+step = 0.01
+value = 0.7
+
+[node name="SFXLabel" type="Label" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+text = "SFX Volume:"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+vertical_alignment = 1
+
+[node name="SFXSlider" type="HSlider" parent="Windows/SettingsWindow/Content/VBox/Grid"]
+custom_minimum_size = Vector2(220, 28)
+max_value = 1.0
+step = 0.01
+value = 0.85
+
+[node name="Spacer" type="Control" parent="Windows/SettingsWindow/Content/VBox"]
+custom_minimum_size = Vector2(0, 8)
+
+[node name="TutorialBtn" type="Button" parent="Windows/SettingsWindow/Content/VBox"]
+custom_minimum_size = Vector2(0, 30)
+text = "Show Tutorial Again"
+theme_override_font_sizes/font_size = 14
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="Windows/SettingsWindow"]
+stream = ExtResource("5_click")
+bus = "SFX"
+
+[node name="Taskbar" type="PanelContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -34.0
+theme_override_styles/panel = SubResource("SB_taskbar")
+
+[node name="HBox" type="HBoxContainer" parent="Taskbar"]
+theme_override_constants/separation = 6
+
+[node name="StartBtn" type="Button" parent="Taskbar/HBox"]
+custom_minimum_size = Vector2(80, 26)
+text = "Start"
+theme_override_font_sizes/font_size = 14
+
+[node name="Spacer" type="Control" parent="Taskbar/HBox"]
+size_flags_horizontal = 3
+
+[node name="ClockPanel" type="PanelContainer" parent="Taskbar/HBox"]
+theme_override_styles/panel = SubResource("SB_taskbar_inset")
+
+[node name="Clock" type="Label" parent="Taskbar/HBox/ClockPanel"]
+text = "12:00 PM"
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 14
+
+[node name="ClickSFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_click")
+bus = "SFX"

@@ -25,8 +25,9 @@ func _on_resume() -> void:
 
 func _on_restart() -> void:
 	get_tree().paused = false
+	GameState.start_new_run()
 	get_tree().change_scene_to_file("res://scenes/Game.tscn")
 
 func _on_main_menu() -> void:
 	get_tree().paused = false
-	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+	get_tree().change_scene_to_file("res://scenes/Desktop.tscn")

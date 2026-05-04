@@ -18,6 +18,12 @@ func _ready() -> void:
 	else:
 		title.modulate = Color(1, 0.7, 0.7)
 	restart_btn.grab_focus()
+	# Buddy reaction
+	await get_tree().create_timer(0.4, true).timeout
+	if GameState.won:
+		Buddy.show_from_pool(BuddyDialog.WIN_CONGRATS)
+	else:
+		Buddy.show_from_pool(BuddyDialog.LOSE_COMFORT)
 
 func _refresh_text() -> void:
 	if GameState.won:
@@ -37,8 +43,9 @@ func _click() -> void:
 
 func _on_restart() -> void:
 	_click()
+	GameState.start_new_run()
 	get_tree().change_scene_to_file("res://scenes/Game.tscn")
 
 func _on_menu() -> void:
 	_click()
-	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
+	get_tree().change_scene_to_file("res://scenes/Desktop.tscn")

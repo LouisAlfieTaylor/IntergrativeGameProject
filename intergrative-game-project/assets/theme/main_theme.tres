@@ -1,0 +1,100 @@
+[gd_resource type="Theme" load_steps=11 format=3]
+
+[ext_resource type="FontFile" path="res://assets/fonts/Px437_IBM_VGA_8x16.ttf" id="1_font_body"]
+[ext_resource type="FontFile" path="res://assets/fonts/Px437_IBM_BIOS.ttf" id="2_font_bios"]
+
+[sub_resource type="StyleBoxFlat" id="SB_button_normal"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="SB_button_hover"]
+bg_color = Color(0.83, 0.83, 0.83, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="SB_button_pressed"]
+bg_color = Color(0.65, 0.65, 0.65, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.18, 0.18, 0.18, 1)
+content_margin_left = 11.0
+content_margin_top = 5.0
+content_margin_right = 9.0
+content_margin_bottom = 3.0
+
+[sub_resource type="StyleBoxFlat" id="SB_button_focus"]
+bg_color = Color(0, 0, 0, 0)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0, 0, 0, 1)
+content_margin_left = 10.0
+content_margin_top = 4.0
+content_margin_right = 10.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="SB_panel"]
+bg_color = Color(0.75, 0.75, 0.75, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(1, 1, 1, 1)
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+
+[sub_resource type="StyleBoxFlat" id="SB_progress_bg"]
+bg_color = Color(0.55, 0.55, 0.55, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.20, 0.20, 0.20, 1)
+
+[sub_resource type="StyleBoxFlat" id="SB_progress_fill"]
+bg_color = Color(0, 0, 0.5, 1)
+
+[sub_resource type="StyleBoxFlat" id="SB_slider_bg"]
+bg_color = Color(0.55, 0.55, 0.55, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.20, 0.20, 0.20, 1)
+
+[resource]
+default_font = ExtResource("1_font_body")
+default_font_size = 16
+Button/colors/font_color = Color(0, 0, 0, 1)
+Button/colors/font_hover_color = Color(0, 0, 0, 1)
+Button/colors/font_pressed_color = Color(0, 0, 0, 1)
+Button/colors/font_focus_color = Color(0, 0, 0, 1)
+Button/styles/normal = SubResource("SB_button_normal")
+Button/styles/hover = SubResource("SB_button_hover")
+Button/styles/pressed = SubResource("SB_button_pressed")
+Button/styles/focus = SubResource("SB_button_focus")
+PanelContainer/styles/panel = SubResource("SB_panel")
+ProgressBar/styles/background = SubResource("SB_progress_bg")
+ProgressBar/styles/fill = SubResource("SB_progress_fill")
+HSlider/styles/slider = SubResource("SB_slider_bg")
+Label/colors/font_color = Color(0, 0, 0, 1)
