@@ -46,19 +46,24 @@ func _process(delta: float) -> void:
 	if _typing:
 		visual.set_mouth_open(int(_bob_t * 8.0) % 2 == 0)
 
+const _VOICE_PATHS: Array[String] = [
+	"res://assets/audio/voice/voice_ba.wav",
+	"res://assets/audio/voice/voice_bo.wav",
+	"res://assets/audio/voice/voice_do.wav",
+	"res://assets/audio/voice/voice_ka.wav",
+	"res://assets/audio/voice/voice_la.wav",
+	"res://assets/audio/voice/voice_mi.wav",
+	"res://assets/audio/voice/voice_ne.wav",
+	"res://assets/audio/voice/voice_po.wav",
+	"res://assets/audio/voice/voice_yu.wav",
+	"res://assets/audio/voice/voice_zi.wav",
+]
+
 func _load_voice_streams() -> void:
-	var dir := DirAccess.open("res://assets/audio/voice/")
-	if dir == null:
-		return
-	dir.list_dir_begin()
-	var fname := dir.get_next()
-	while fname != "":
-		if not dir.current_is_dir() and fname.ends_with(".wav"):
-			var stream = load("res://assets/audio/voice/" + fname)
-			if stream:
-				_voice_streams.append(stream)
-		fname = dir.get_next()
-	dir.list_dir_end()
+	for path in _VOICE_PATHS:
+		var stream = load(path)
+		if stream:
+			_voice_streams.append(stream)
 	# Pre-allocate a small pool of players for overlap
 	for i in 4:
 		var p := AudioStreamPlayer.new()

@@ -27,8 +27,8 @@ signal failed(reason: String)
 @onready var prompt_label: Label = $Prompt
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var burst: GPUParticles2D = $SuccessBurst
-@onready var success_sfx: AudioStreamPlayer2D = $SuccessSFX
-@onready var fail_sfx: AudioStreamPlayer2D = $FailSFX
+@onready var success_sfx: AudioStreamPlayer = $SuccessSFX
+@onready var fail_sfx: AudioStreamPlayer = $FailSFX
 
 var state: int = State.WAITING
 var time_left: float = DEFAULT_DURATION

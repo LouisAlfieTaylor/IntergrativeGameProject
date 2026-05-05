@@ -191,10 +191,10 @@ libraries = {
 "": SubResource("AnimationLibrary_task")
 }
 
-[node name="SuccessSFX" type="AudioStreamPlayer2D" parent="."]
+[node name="SuccessSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_success")
 bus = "SFX"
 
-[node name="FailSFX" type="AudioStreamPlayer2D" parent="."]
+[node name="FailSFX" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_fail")
 bus = "SFX"
