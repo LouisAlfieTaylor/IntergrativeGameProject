@@ -120,30 +120,35 @@ func _apply_level_config(level: int) -> void:
 			has_glitches = false
 			window_title = "Crunch Time - briefcase.exe (Onboarding)"
 		2:
-			round_time = 70.0
-			spawn_min = 1.9
-			spawn_max = 3.4
+			# Medium — busier spawns, shorter task windows, more frequent popups
+			round_time = 75.0
+			spawn_min = 1.6
+			spawn_max = 2.8
 			max_active_tasks = 3
-			task_duration_start = 9.0
-			task_duration_end = 7.0
+			task_duration_start = 8.0
+			task_duration_end = 6.0
 			palette_id = 0
 			has_popups = true
 			has_glitches = false
-			popup_min = 7.0
-			popup_max = 11.0
+			popup_min = 5.0
+			popup_max = 8.5
 			max_active_popups = 2
 			window_title = "Crunch Time - briefcase.exe (Popup Hell)"
 		_:
-			# Level 3 (and any later)
-			round_time = 80.0
-			spawn_min = 1.7
-			spawn_max = 3.0
-			max_active_tasks = 3
-			task_duration_start = 8.5
-			task_duration_end = 6.5
+			# Level 3 — hard but fair: 4 concurrent tasks, fast expiry, popups + glitches.
+			# A focused player can beat it; an idle one will stress out quickly.
+			round_time = 90.0
+			spawn_min = 1.1
+			spawn_max = 2.0
+			max_active_tasks = 4
+			task_duration_start = 7.0
+			task_duration_end = 4.5
 			palette_id = 1
-			has_popups = false
+			has_popups = true
 			has_glitches = true
+			popup_min = 5.0
+			popup_max = 9.0
+			max_active_popups = 2
 			window_title = "Crunch Time - briefcase.exe (CORRUPTED)"
 
 func _setup_level_modifiers() -> void:
