@@ -97,8 +97,7 @@ func _ready() -> void:
 	title_label.text = window_title
 
 	pause_layer.visible = false
-	if music.stream is AudioStreamWAV:
-		music.stream.loop_mode = AudioStreamWAV.LOOP_FORWARD
+	music.finished.connect(music.play)
 	music.play()
 	_start_round()
 	# Modifiers must be set up AFTER _start_round so round_active is true
@@ -326,6 +325,7 @@ func _end_round(survived: bool) -> void:
 	player.force_end_burst()
 	player.input_locked = true
 	GameState.record_round(won, score, tasks_completed, tasks_perfect, round_time - time_left)
+	music.finished.disconnect(music.play)
 	music.stop()
 	round_ended.emit(won)
 	var tween := create_tween()

@@ -1,6 +1,7 @@
 extends Node
 
 const SAVE_PATH := "user://settings.cfg"
+const _BUS_LAYOUT = preload("res://default_bus_layout.tres")
 
 signal settings_changed
 
@@ -10,9 +11,7 @@ var sfx_volume: float = 0.85
 var locale: String = "en"
 
 func _ready() -> void:
-	var layout = load("res://default_bus_layout.tres")
-	if layout:
-		AudioServer.set_bus_layout(layout)
+	AudioServer.set_bus_layout(_BUS_LAYOUT)
 	load_settings()
 	apply_all()
 
