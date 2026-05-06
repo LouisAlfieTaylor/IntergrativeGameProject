@@ -16,12 +16,21 @@ run/main_scene="res://scenes/Boot.tscn"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 
+[audio]
+
+buses/default_bus_layout="res://default_bus_layout.tres"
+
 [autoload]
 
 LanguageManager="*res://scripts/LanguageManager.gd"
 SettingsManager="*res://scripts/SettingsManager.gd"
 GameState="*res://scripts/GameState.gd"
 Buddy="*res://scenes/Buddy.tscn"
+
+[internationalization]
+
+locale/translations=PackedStringArray("res://assets/translations/translations.en.translation", "res://assets/translations/translations.fr.translation")
+locale/fallback="en"
 
 [display]
 

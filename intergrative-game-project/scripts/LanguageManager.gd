@@ -1,5 +1,16 @@
 extends Node
 
+# Translations are registered with TranslationServer two ways:
+# 1. project.godot's [internationalization] locale/translations entry — this
+#    auto-loads the .translation files and is what works in EXPORTED builds
+#    (the CSV itself isn't bundled because FileAccess.open is a string path
+#    the export scanner can't follow).
+# 2. CSV parsing below — only runs in dev when the CSV is present, useful
+#    when iterating on text without re-importing in the editor.
+#
+# At startup we discover the available locales from whichever source returned
+# something, so the language toggle works in both dev and export.
+
 const CSV_PATH := "res://assets/translations/translations.csv"
 
 signal language_changed(locale: String)
@@ -8,15 +19,22 @@ var _locales: Array[String] = []
 
 func _ready() -> void:
 	_load_translations_from_csv()
+	if _locales.is_empty():
+		# Export build — CSV not bundled. Fall back to whatever the engine
+		# already loaded via project.godot's [internationalization] section.
+		for loc in TranslationServer.get_loaded_locales():
+			if not _locales.has(loc):
+				_locales.append(loc)
 
 func _load_translations_from_csv() -> void:
+	if not FileAccess.file_exists(CSV_PATH):
+		return  # No CSV (likely an export build) — leave to the fallback
 	var f := FileAccess.open(CSV_PATH, FileAccess.READ)
 	if f == null:
-		push_error("Could not open translations CSV: %s" % CSV_PATH)
 		return
 	var header := f.get_csv_line()
 	if header.size() < 2:
-		push_error("Translations CSV header invalid")
+		f.close()
 		return
 	for i in range(1, header.size()):
 		_locales.append(header[i])

@@ -7,6 +7,7 @@ const STRESS_MISS := 8.0                # was 14 — a miss is now ~6s of regen
 const STRESS_EXPIRED := 11.0            # was 18
 const TASK_SCENE := preload("res://scenes/Task.tscn")
 const POPUP_SCENE := preload("res://scenes/Popup.tscn")
+const GLITCH_SCRIPT := preload("res://scripts/GlitchEffect.gd")
 const MAX_BUDDY_CAMEOS_PER_LEVEL := 2
 const BUDDY_CAMEO_CHANCE := 0.18
 
@@ -148,9 +149,8 @@ func _apply_level_config(level: int) -> void:
 
 func _setup_level_modifiers() -> void:
 	if has_glitches:
-		var glitch_script := load("res://scripts/GlitchEffect.gd")
 		_glitch_node = Node2D.new()
-		_glitch_node.set_script(glitch_script)
+		_glitch_node.set_script(GLITCH_SCRIPT)
 		_glitch_node.set("area", Vector2(1140, 576))
 		var overlay_layer = sv.get_node("OverlayLayer")
 		overlay_layer.add_child(_glitch_node)
