@@ -7,6 +7,21 @@ const TYPE_INTERVAL := 0.035  # seconds per character
 const VOICE_EVERY_N_CHARS := 3
 const HIDE_AFTER_FINISH := 1.6  # auto-hide delay after typing finishes
 
+# Voice samples are explicit preloads (not dynamic load) so Godot's export
+# scanner detects them as dependencies and bundles the WAVs in the .pck.
+const VOICE_STREAMS := [
+	preload("res://assets/audio/voice/voice_ba.wav"),
+	preload("res://assets/audio/voice/voice_bo.wav"),
+	preload("res://assets/audio/voice/voice_do.wav"),
+	preload("res://assets/audio/voice/voice_ka.wav"),
+	preload("res://assets/audio/voice/voice_la.wav"),
+	preload("res://assets/audio/voice/voice_mi.wav"),
+	preload("res://assets/audio/voice/voice_ne.wav"),
+	preload("res://assets/audio/voice/voice_po.wav"),
+	preload("res://assets/audio/voice/voice_yu.wav"),
+	preload("res://assets/audio/voice/voice_zi.wav"),
+]
+
 signal finished
 
 @onready var root: Control = $Root
@@ -60,10 +75,10 @@ const _VOICE_PATHS: Array[String] = [
 ]
 
 func _load_voice_streams() -> void:
-	for path in _VOICE_PATHS:
-		var stream = load(path)
-		if stream:
-			_voice_streams.append(stream)
+	# Use the precompiled list — works in both dev and exported builds.
+	for s in VOICE_STREAMS:
+		if s != null:
+			_voice_streams.append(s)
 	# Pre-allocate a small pool of players for overlap
 	for i in 4:
 		var p := AudioStreamPlayer.new()
